@@ -1,5 +1,33 @@
 # Changelog
 
+## [8.6.0](https://github.com/Bekaboo/dropbar.nvim/compare/v8.5.0...v8.6.0) (2024-06-14)
+
+
+### Features
+
+* **hlgroups:** add workaround for winbar background issue ([#118](https://github.com/Bekaboo/dropbar.nvim/issues/118)) ([98aec7c](https://github.com/Bekaboo/dropbar.nvim/commit/98aec7ca97da2a271ff32c6a151873a75f15a691))
+
+
+### Bug Fixes
+
+* **compat-0.11:** use `vim.islist` if available ([#158](https://github.com/Bekaboo/dropbar.nvim/issues/158)) ([9fc10fa](https://github.com/Bekaboo/dropbar.nvim/commit/9fc10fa1a34ec3e55b470962e4e94644611bd209))
+* **menu:** cursor position not restored after exiting fzf mode ([cd79d3c](https://github.com/Bekaboo/dropbar.nvim/commit/cd79d3c9fbe6548b80ed6107405f33387d907e5c))
+* **sources-path:** not switching to selected file if selected from fzf ([fd917b7](https://github.com/Bekaboo/dropbar.nvim/commit/fd917b70535371d45285bc94f9eb6387677c6dce))
+
+## [8.5.0](https://github.com/Bekaboo/dropbar.nvim/compare/v8.4.0...v8.5.0) (2024-04-20)
+
+
+### Features
+
+* **configs:** show warning messages when file is too large to preview ([e3c7de9](https://github.com/Bekaboo/dropbar.nvim/commit/e3c7de9f733587373959b220d5a1970c476a3d9f))
+
+## [8.4.0](https://github.com/Bekaboo/dropbar.nvim/compare/v8.3.0...v8.4.0) (2024-03-24)
+
+
+### Features
+
+* **menu:** set &winfixbuf in menu windows ([a5f3d6a](https://github.com/Bekaboo/dropbar.nvim/commit/a5f3d6a172fceadcfed58b8c209ac3211635a3c8))
+
 ## [8.3.0](https://github.com/Bekaboo/dropbar.nvim/compare/v8.2.1...v8.3.0) (2024-03-03)
 
 

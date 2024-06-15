@@ -506,7 +506,7 @@ M.opts = {
       ['<C-j>'] = api.fuzzy_find_next,
       ['<C-p>'] = api.fuzzy_find_prev,
       ['<C-n>'] = api.fuzzy_find_next,
-      ['<Enter>'] = api.fuzzy_find_click,
+      ['<CR>'] = api.fuzzy_find_click,
       ['<S-Enter>'] = function()
         api.fuzzy_find_click(-1)
       end,
@@ -539,7 +539,20 @@ M.opts = {
       ---@type boolean|fun(path: string): boolean?|nil
       preview = function(path)
         local stat = vim.uv.fs_stat(path)
-        return stat and stat.type == 'file' and stat.size <= 524288
+        if not stat or stat.type ~= 'file' then
+          return false
+        end
+        if stat.size > 524288 then
+          vim.notify(
+            string.format(
+              '[dropbar.nvim] file "%s" too large to preview',
+              path
+            ),
+            vim.log.levels.WARN
+          )
+          return false
+        end
+        return true
       end,
     },
     treesitter = {
@@ -645,8 +658,10 @@ M.opts = {
 ---@param new_opts dropbar_configs_t?
 function M.set(new_opts)
   new_opts = new_opts or {}
+
+  local islist = vim.islist or vim.tbl_islist
   -- Notify deprecated options
-  if new_opts.general and vim.tbl_islist(new_opts.general.update_events) then
+  if new_opts.general and islist(new_opts.general.update_events) then
     vim.api.nvim_echo({
       { '[dropbar.nvim] ', 'Normal' },
       { 'opts.general.update_events', 'WarningMsg' },

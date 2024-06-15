@@ -156,7 +156,7 @@ https://github.com/Bekaboo/dropbar.nvim/assets/76579810/e8c1ac26-0321-4762-9975-
 
 ## Requirements
 
-- Neovim **Nightly** (>= 0.10.0-dev)
+- Neovim >= 0.10.0
 - Optional
   - [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons), if you want to see icons for different filetypes
   - [telescope-fzf-native](https://github.com/nvim-telescope/telescope-fzf-native.nvim), if you want fuzzy search support
@@ -666,7 +666,7 @@ vim.ui.select = require('dropbar.utils.menu').select
         ['<C-j>'] = api.fuzzy_find_next,
         ['<C-p>'] = api.fuzzy_find_prev,
         ['<C-n>'] = api.fuzzy_find_next,
-        ['<Enter>'] = api.fuzzy_find_click,
+        ['<CR>'] = api.fuzzy_find_click,
         ['<S-Enter>'] = function()
           api.fuzzy_find_click(-1)
         end,
@@ -792,7 +792,20 @@ vim.ui.select = require('dropbar.utils.menu').select
         ---@type boolean|fun(path: string): boolean?|nil
         preview = function(path)
           local stat = vim.uv.fs_stat(path)
-          return stat and stat.type == 'file' and stat.size <= 524288
+          if not stat or stat.type ~= 'file' then
+            return false
+          end
+          if stat.size > 524288 then
+            vim.notify(
+              string.format(
+                '[dropbar.nvim] file "%s" too large to preview',
+                path
+              ),
+              vim.log.levels.WARN
+            )
+            return false
+          end
+          return true
         end,
       },
       treesitter = {
@@ -1409,7 +1422,7 @@ appearance of the fuzzy finder interface.
       ['<C-j>'] = api.fuzzy_find_next,
       ['<C-p>'] = api.fuzzy_find_prev,
       ['<C-n>'] = api.fuzzy_find_next,
-      ['<Enter>'] = api.fuzzy_find_click,
+      ['<CR>'] = api.fuzzy_find_click,
       ['<S-Enter>'] = function()
         api.fuzzy_find_click(-1)
       end,
@@ -1608,8 +1621,21 @@ each sources.
     ```lua
     function(path)
       local stat = vim.uv.fs_stat(path)
-      return stat and stat.type == 'file' and stat.size <= 524288
-    end
+      if not stat or stat.type ~= 'file' then
+        return false
+      end
+      if stat.size > 524288 then
+        vim.notify(
+          string.format(
+            '[dropbar.nvim] file "%s" too large to preview',
+            path
+          ),
+          vim.log.levels.WARN
+        )
+        return false
+      end
+      return true
+    end,
     ```
 
 ##### Treesitter
